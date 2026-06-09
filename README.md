@@ -14,6 +14,36 @@ A web-based object detection app powered by **YOLOv8** and **Flask**. Upload any
 
 ---
 
+## Dataset Used
+
+This project uses the **COCO (Common Objects in Context) Dataset**, a widely used benchmark dataset for object detection and computer vision tasks.
+
+* **Dataset:** COCO 2017
+* **Source:** https://cocodataset.org
+* **Object Categories:** 80
+* **Annotations:** Bounding Boxes, Segmentation Masks, and Keypoints
+
+### Detectable Classes
+
+The YOLOv8 model is pretrained on COCO and can detect objects such as:
+
+* Person
+* Car
+* Bicycle
+* Bus
+* Dog
+* Cat
+* Chair
+* Bottle
+* Laptop
+* Cell Phone
+
+and 70+ additional object categories.
+
+The pretrained YOLOv8 model leverages the COCO dataset to provide accurate real-time object detection without requiring custom training.
+
+---
+
 ## Features
 
 - Upload JPG or PNG images (up to 16 MB)
@@ -153,13 +183,27 @@ The app will be live at `https://your-username-object-detection-system.hf.space`
 
 ---
 
-## Model
+## Model Details
 
-This project uses **YOLOv8n** (nano) — the smallest and fastest variant in the YOLOv8 family, suitable for CPU inference on free-tier hosting.
+| Property          | Value                                           |
+| ----------------- | ----------------------------------------------- |
+| Model             | YOLOv8 Nano (YOLOv8n)                           |
+| Framework         | Ultralytics YOLO                                |
+| Training Dataset  | COCO 2017                                       |
+| Number of Classes | 80                                              |
+| Task              | Object Detection                                |
+| Input Type        | RGB Images                                      |
+| Output            | Bounding Boxes, Class Labels, Confidence Scores |
+| Inference Device  | CPU / GPU                                       |
+| Deployment        | Flask + Docker + Hugging Face Spaces            |
 
-**Detectable classes include:** person, car, bicycle, dog, cat, chair, bottle, laptop, phone, and 71 more from the [COCO dataset](https://cocodataset.org/#explore).
+### Performance Characteristics
 
-To use a larger model for better accuracy, replace `yolov8n.pt` with `yolov8s.pt`, `yolov8m.pt`, etc. and update the path in `app.py`.
+* Lightweight and optimized for real-time inference
+* Suitable for CPU-based deployment
+* Fast prediction speeds on free-tier cloud platforms
+* Detects multiple objects simultaneously within a single image
+* Supports confidence-based filtering of predictions
 
 ---
 
