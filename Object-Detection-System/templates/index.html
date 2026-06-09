@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="AI-powered Object Detection System – upload an image to detect objects instantly." />
+  <title>Object Detection System</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+  <!-- ─── Animated Background ───────────────────────── -->
+  <div class="bg-particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ─── Header ────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2.5" />
+            <rect x="32" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2.5" />
+            <rect x="4" y="32" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2.5" />
+            <rect x="32" y="32" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2.5" />
+            <circle cx="24" cy="24" r="7" stroke="currentColor" stroke-width="2.5" />
+            <line x1="16" y1="10" x2="32" y2="10" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3" />
+            <line x1="16" y1="38" x2="32" y2="38" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3" />
+            <line x1="10" y1="16" x2="10" y2="32" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3" />
+            <line x1="38" y1="16" x2="38" y2="32" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="site-title">Object Detection System</h1>
+
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        <span>AI Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main Content ──────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- ── Upload Card ───────────────────────────────── -->
+    <section class="card upload-card" aria-labelledby="upload-heading">
+      <div class="card-header">
+        <div class="card-icon upload-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" />
+            <polyline points="17 8 12 3 7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <h2 id="upload-heading" class="card-title">Upload Image</h2>
+          <p class="card-desc">JPG, JPEG, or PNG — max 16 MB</p>
+        </div>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Drop image here or click to browse"
+        aria-describedby="drop-hint">
+        <input type="file" id="imageInput" accept=".jpg,.jpeg,.png" hidden aria-label="Upload image" />
+
+        <div class="drop-zone-content" id="dropZoneContent">
+          <div class="drop-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="12" width="48" height="36" rx="4" stroke="currentColor" stroke-width="2.5"
+                stroke-dasharray="6 4" />
+              <circle cx="22" cy="26" r="4" stroke="currentColor" stroke-width="2.5" />
+              <path d="M8 36l12-10 8 8 8-12 20 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <p class="drop-primary">Drag &amp; drop your image here</p>
+          <p class="drop-secondary" id="drop-hint">or <button class="browse-btn" id="browseBtn" type="button">browse
+              files</button></p>
+          <div class="drop-formats">
+            <span class="format-tag">JPG</span>
+            <span class="format-tag">JPEG</span>
+            <span class="format-tag">PNG</span>
+          </div>
+        </div>
+
+        <!-- Preview (shown after image selection) -->
+        <div class="preview-container hidden" id="previewContainer">
+          <img id="previewImage" src="" alt="Preview of uploaded image" class="preview-img" />
+          <div class="preview-overlay">
+            <button class="change-btn" id="changeImageBtn" type="button" aria-label="Change image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+              Change Image
+            </button>
+          </div>
+          <div class="file-info" id="fileInfo"></div>
+        </div>
+      </div>
+
+      <!-- Detect Button -->
+      <button class="detect-btn" id="detectBtn" type="button" disabled aria-label="Detect objects in image">
+        <span class="btn-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <circle cx="11" cy="11" r="3" />
+          </svg>
+        </span>
+        <span class="btn-text">Detect Objects</span>
+      </button>
+    </section>
+
+    <!-- ── Error Alert ────────────────────────────────── -->
+    <div class="alert alert-error hidden" id="errorAlert" role="alert" aria-live="assertive">
+      <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <span id="errorMessage">An error occurred.</span>
+      <button class="alert-close" id="closeError" aria-label="Dismiss error">✕</button>
+    </div>
+
+    <!-- ── Loading Overlay ────────────────────────────── -->
+    <div class="loading-card hidden" id="loadingCard" aria-live="polite" aria-busy="true">
+      <div class="loading-inner">
+        <div class="scanner-wrapper" aria-hidden="true">
+          <div class="scanner-box">
+            <div class="scanner-line"></div>
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+          </div>
+        </div>
+        <p class="loading-title">Analyzing Image</p>
+        <p class="loading-sub">Scanning image for objects…</p>
+        <div class="loading-steps" id="loadingSteps">
+          <div class="step active" id="step1">
+            <div class="step-dot"></div>
+            <span>Pre-processing image</span>
+          </div>
+          <div class="step" id="step2">
+            <div class="step-dot"></div>
+            <span>Running neural network</span>
+          </div>
+          <div class="step" id="step3">
+            <div class="step-dot"></div>
+            <span>Drawing bounding boxes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Results Section ────────────────────────────── -->
+    <section class="results-section hidden" id="resultsSection" aria-labelledby="results-heading" aria-live="polite">
+
+      <!-- Results Header -->
+      <div class="results-header">
+        <div>
+          <h2 id="results-heading" class="results-title">Detection Results</h2>
+          <p class="results-subtitle" id="resultsSummaryText"></p>
+        </div>
+        <button class="reset-btn" id="resetBtn" type="button" aria-label="Reset and upload new image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10" />
+            <path d="M3.51 15a9 9 0 1 0 .49-3.89" />
+          </svg>
+          Try Another Image
+        </button>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row" id="statsRow"></div>
+
+      <!-- Image Comparison -->
+      <div class="image-compare-grid">
+        <div class="img-card">
+          <div class="img-card-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                clip-rule="evenodd" />
+            </svg>
+            Original Image
+          </div>
+          <img id="originalImage" src="" alt="Original uploaded image" class="compare-img" />
+        </div>
+        <div class="img-card">
+          <div class="img-card-label detected-label">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+            </svg>
+            Detected Objects
+          </div>
+          <img id="annotatedImage" src="" alt="Image with detected objects highlighted" class="compare-img" />
+        </div>
+      </div>
+
+      <!-- Detection List -->
+      <div class="detections-card" id="detectionsCard">
+        <div class="detections-header">
+          <h3 class="detections-title">Detected Objects</h3>
+          <div class="filter-tabs" id="filterTabs" role="tablist" aria-label="Filter detections">
+            <button class="tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+          </div>
+        </div>
+        <div class="detections-list" id="detectionsList" role="list"></div>
+      </div>
+
+      <!-- Object Summary Table -->
+      <div class="summary-card hidden" id="summaryCard">
+        <h3 class="summary-title">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+            <path fill-rule="evenodd"
+              d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+              clip-rule="evenodd" />
+          </svg>
+          Object Count Summary
+        </h3>
+        <div class="summary-table-wrap">
+          <table class="summary-table" aria-label="Detected object summary">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Object Class</th>
+                <th scope="col">Count</th>
+                <th scope="col">Presence</th>
+              </tr>
+            </thead>
+            <tbody id="summaryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ─── Footer ────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p>Object Detection System &mdash; Real-time AI Analysis</p>
+  </footer>
+
+  <!-- Main JavaScript -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
