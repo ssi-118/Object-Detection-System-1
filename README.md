@@ -1,3 +1,13 @@
+---
+title: Object Detection System
+emoji: 🏆
+colorFrom: indigo
+colorTo: gray
+sdk: docker
+pinned: false
+license: apache-2.0
+---
+
 # Object Detection System
 
 A web-based object detection app powered by **YOLOv8** and **Flask**. Upload any image and get real-time bounding boxes, labels, and confidence scores for up to 80 object classes from the COCO dataset.
