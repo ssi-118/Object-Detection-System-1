@@ -153,6 +153,12 @@ To use a larger model for better accuracy, replace `yolov8n.pt` with `yolov8s.pt
 
 ---
 
+## Live Demo
+```
+https://soha118-object-detection-system.hf.space
+```
+---
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
